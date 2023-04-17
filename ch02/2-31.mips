@@ -1,0 +1,34 @@
+
+# int f(int a, int b, int c, int d)
+# 	return func(func(a, b), c + d)
+
+# int func(int a, int b)
+f: 
+addi $sp, $sp, -12 # adjust stack for 3 more items
+# push 3 items
+sw $ra, 8($sp)
+sw $s0, 4($sp)
+sw $s1, 0($sp)
+
+add $s0, $a3, $0 # $s0 <- $a3
+add $s1, $a2, $0 # $s1 <- $a2
+
+jal func # $v0 <- func(a, b)
+add $a0, $v0, $0 # $a0 = func(a, b)
+add $a1, $s0, $s1 # $a1 = c + d
+jal func # $v0 <- func(func(a, b), c + d)
+
+# pop 3 items
+lw $s1, 0($sp)
+lw $s0, 4($sp)
+lw $ra, 8($sp)
+addi $sp, $sp, 12 # restore $sp
+
+jr $ra
+
+# two arguments, return int
+func:
+
+
+
+
